@@ -1,0 +1,34 @@
+[package]
+name = "e34-vision"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+resolver = "2"
+
+[dependencies]
+anyhow = "1"
+esp-idf-svc = { version = "0.52", default-features = false, features = [
+    "std",
+    "binstart",
+] }
+esp-idf-sys = "0.37"
+heapless = "0.9.1"
+rusty_esp_image-core = { version = "0.1.2", features = ["std"] }
+rusty_esp_image-esp = { version = "0.1.2", features = ["esp-idf"] }
+
+[build-dependencies]
+embuild = "0.33"
+
+[package.metadata.esp-idf-sys]
+esp_idf_version = "v5.5.1"
+esp_idf_tools_install_dir = "global"
+extra_components = [
+    { remote_component = { name = "espressif/esp32-camera", version = "^2.0" }, bindings_header = "bindings.h", bindings_module = "camera" },
+]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
